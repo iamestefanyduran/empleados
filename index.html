@@ -1,0 +1,46 @@
+
+<html>
+ <head>
+    <!-- Importación de la librería de jquery. -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript"> 
+       //Función que envía la petición ajax.
+       function buscar_legajo(){
+          $.ajax({
+ url: 'buscar_empleado.php',
+             type: 'POST',
+             timeout: 10000,
+             data: {legajo: $("#legajo").val()},
+             dataType: 'JSON',
+             beforeSend: function(){
+                $("#respuesta").html('Buscando legajo...');
+             },
+             error: function(){
+                $("#respuesta").html('');
+                alert('Ha surgido un error.')
+             },
+             success: function(respuesta){
+                if(respuesta){
+                   $("#respuesta").html('Nombre y apellido: ' + respuesta.nombre + ' ' + respuesta.apellido + ' / Departamento: ' + respuesta.departamento + ' / Saldo: ' + respuesta.Saldo + ' / Lugar: ' + respuesta.Lugar);
+                }else{
+                   $("#respuesta").html('El numero de legajo no le corresponde a ningun empleado');
+                }
+             }
+          })
+       } 
+    $(document).ready(function(){
+       $("#boton_buscar_legajo").click(function(){
+          buscar_legajo();
+       });
+    });
+ </script> 
+ </head>
+ <body> 
+    <form action="javascript:void(0);">
+       <label> Buscar empleado por legajo (10001, 10002, 10003): </label>
+       <input type="text" name="legajo" id="legajo" />
+       <input type="submit" id="boton_buscar_legajo" />
+       <div id="respuesta"></div>
+    </form> 
+ </body>
+</html>
